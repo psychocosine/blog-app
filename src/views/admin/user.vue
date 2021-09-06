@@ -63,6 +63,7 @@
           layout="prev, pager, next"
           :total="max_size"
           :page-size="10"
+          :current-page="query.page"
           @current-change="handlePageChange">
         </el-pagination>
       </div>
@@ -118,10 +119,7 @@ import {deleteObj, getAllUsers,batch_create} from './api'
       },
       handleSearch(input){
         this.query.search =input
-        this.getAllUsers(this.query)
-      },
-      handleSearch(input){
-        this.query.search =input
+        this.query.page = 1
         this.getAllUsers(this.query)
       },
       onSubmit(){
@@ -129,6 +127,11 @@ import {deleteObj, getAllUsers,batch_create} from './api'
           this.$message({
             type:'success',
             message:'创建成功'
+          })
+        }).catch(e=>{
+          this.$message({
+            type:'error',
+            message:'创建失败'
           })
         })
       }

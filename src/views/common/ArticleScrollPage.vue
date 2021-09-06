@@ -61,9 +61,9 @@
     },
     mounted() {
       setTimeout(()=>{
-        this.getArticles(false)
-      },100)
-      
+        
+      },1000)
+      this.getArticles(false)
     },
     
     methods: {

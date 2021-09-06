@@ -44,6 +44,7 @@
           layout="prev, pager, next"
           :total="max_size"
           :page-size="10"
+          :current-page="query.page"
           @current-change="handlePageChange">
         </el-pagination>
       </div>
@@ -78,6 +79,7 @@ import {getBrowserRecords,deleteObj} from './api'
       },
       handleSearch(input){
         this.query.search =input
+        this.query.page = 1
         this.getBrowserRecords(this.query)
       }
     },

@@ -1,6 +1,8 @@
 <template>
 <div>
-  <el-table
+  <el-card>
+    <h3 slot="header">文章列表</h3>
+    <el-table
     :data="tableData"
     style="width: 100%">
     <el-table-column type="expand">
@@ -80,18 +82,24 @@
           layout="prev, pager, next"
           :total="max_size"
           :page-size="10"
+          :current-page="query.page"
           @current-change="handlePageChange">
         </el-pagination>
       </div>
     </template>
   </el-table>
+  </el-card>
+  <el-card>
+    <h3 slot="header">清空数量为0的视图</h3>
+    <el-button @click="deleteZero" type="primary">清空</el-button>
+  </el-card>
   
   </div>
 </template>
 
 
 <script>
-import {getAllArticles,deleteObj} from './api'
+import {getAllArticles,deleteObj,deleteZero} from './api'
   export default {
     created(){
       this.getAllArticles(this.query)
@@ -115,7 +123,16 @@ import {getAllArticles,deleteObj} from './api'
       },
       handleSearch(input){
         this.query.search =input
+        this.query.page = 1
         this.getAllArticles(this.query)
+      },
+      deleteZero(){
+        deleteZero().then(r=>{
+          this.$message({
+            type:'success',
+            message:'删除成功'
+          })
+        })
       }
     },
     data() {

@@ -41,6 +41,7 @@ export function deleteZero(){
     })
 }
 export function batch_create(data){
+    data.default_password = data.default_password==''?undefined:data.default_password;
     return request({
         method:'post',
         url:'/account/create_users/',

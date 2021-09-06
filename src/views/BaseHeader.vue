@@ -40,6 +40,7 @@
             <el-submenu index>
               <template slot="title">
                 <img class="me-header-picture" :src="user.avatar"/>
+                <span>{{user.name}}</span>
               </template>
               <el-menu-item index="/write" >写文章</el-menu-item>
               <el-menu-item index="/settings" >个人中心</el-menu-item>
@@ -76,8 +77,9 @@
         let login = this.$store.state.account.length != 0
         let avatar = this.$store.state.avatar
         let admin = this.$store.state.admin
+        let name = this.$store.state.account
         return {
-          login, avatar,admin
+          login, avatar,admin,name
         }
       }
     },

@@ -51,7 +51,9 @@
         </el-upload>
       </el-col>
     </el-row>
-    <el-descriptions title="用户个人信息" direction="vertical" :column="7" border>
+    <el-row >
+      <el-col :span="16" :offset="4">
+        <el-descriptions title="用户个人信息" direction="vertical" :column="7" border>
       <template slot="extra">
         <el-button type="primary" size="small" @click="dialogVisible=true">更改信息</el-button>
       </template>
@@ -64,17 +66,21 @@
       </el-descriptions-item>
       <el-descriptions-item label="上次登录时间">{{new Date(userinfo.last_login).format('yyyy-MM-dd hh:mm:ss')}}</el-descriptions-item>
     </el-descriptions>
-
       <el-tabs type="border-card">
         <el-tab-pane>
           <template #label>
             <span><i class="el-icon-document"></i> 我的文章</span>
           </template>
           <div>
-            <article-scroll-page :query="tmp"></article-scroll-page>
+            <article-scroll-page :query="tmp" v-if="tmp.author_id"></article-scroll-page>
           </div>
         </el-tab-pane>
       </el-tabs>
+      </el-col>
+    </el-row>
+    
+
+      
   </div>
 </template>
 
@@ -108,6 +114,8 @@ import ArticleScrollPage from '@/views/common/ArticleScrollPage'
     },
     created(){
       this.getUserInfo()
+      this.userForm.birthday = this.userinfo.birthday
+      
       // var csrftoken = document.cookie.replace(/(?:(?:^|.*;\s*)test2\s*\=\s*([^;]*).*$)|^.*$/, "csrftoken");
       this.headers['X-CSRFToken'] = docCookies.getItem('csrftoken')
       
@@ -130,6 +138,7 @@ import ArticleScrollPage from '@/views/common/ArticleScrollPage'
       getUserInfo(){
         getUserInfo().then(data=>{
           this.userinfo = data.data[0].fields;
+          this.userinfo['birthday'] = data.data[0].fields.birthday
           this.userinfo['id'] = data.data[0].pk
           this.tmp['author_id'] = data.data[0].pk
         })
