@@ -3,7 +3,8 @@ import qs from "qs"
 import { getUsernameById } from './login'
 export function getArticles(query, page) {
   return new Promise((resolve,reject)=>{
-
+    console.log("article.js "+query.author_id)
+    
     request({
       url: '/article/list/',
       method: 'get',
@@ -60,7 +61,6 @@ export function getHotArtices() {
         data:[]
       }
       res = res.data.results;
-      console.log(res)
       for(var i=0;i<res.length;i++){
         data.data.push({id:res[i].id,title:res[i].title})
       }
@@ -162,7 +162,6 @@ export function listArchives() {
       method: 'get'
     }).then(r=>{
       var data = r.data.map(item=>({year:item.fields.year,month:item.fields.month,count:item.fields.count}))
-      console.log(data)
       resolve(data)
     })
   })

@@ -1,4 +1,5 @@
 import request from '@/request'
+import qs from 'qs'
 export function getAllArticles(query) {
     var params = query;
     params['format'] = 'json'
@@ -31,5 +32,18 @@ export function deleteObj(pk,url){
     return request({
         method:'delete',
         url:'/blog_admin'+url+`/${pk}`,
+    })
+}
+export function deleteZero(){   
+    return request({
+        method:'delete',
+        url:'/blog_admin/delete-zero/',
+    })
+}
+export function batch_create(data){
+    return request({
+        method:'post',
+        url:'/account/create_users/',
+        data:qs.stringify(data)
     })
 }

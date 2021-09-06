@@ -102,8 +102,10 @@
               :articleId="article.id"
               :index="index"
               :rootCommentCounts="comments.length"
-              @commentCountsIncrement="commentCountsIncrement"
-              :key="c.id">
+              v-on:commentCountsIncrement="commentCountsIncrement"
+              :key="c.id"
+              :canDelete="admin||c.author.id==user_id||article.author.id==user_id"
+              >
             </commment-item>
 
           </div>
@@ -169,6 +171,12 @@
       },
       title() {
         return `${this.article.title} - 文章 - For Fun`
+      },
+      admin() {
+        return this.$store.state.admin
+      },
+      user_id(){
+        return this.$store.state.id
       }
     },
     methods: {
@@ -201,7 +209,7 @@
         that.comment.parent['id'] = undefined
         publishComment(that.comment).then(data => {
           that.$message({type: 'success', message: '评论成功', showClose: true})
-          that.commentCountsIncrement()
+          that.commentCountsIncrement(1)
           that.comment.content = ''
         }).catch(error => {
           if (error !== 'error') {
@@ -219,8 +227,9 @@
           }
         })
       },
-      commentCountsIncrement() {
-        this.article.commentCounts += 1
+      commentCountsIncrement(cnt) {
+        console.log(cnt)
+        this.article.commentCounts += Number(cnt)
         this.getCommentsByArticle()
       },
       deleteArticle() {

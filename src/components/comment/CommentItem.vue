@@ -21,6 +21,9 @@
         <a class="me-view-comment-tool" @click="showComment(-1)">
           <i class="me-icon-comment"></i>&nbsp; 评论
         </a>
+        <a class="me-view-comment-tool" @click="deleteComment(comment.id)" v-if="canDelete">
+          <i class="el-icon-delete"></i>&nbsp; 删除
+        </a>
       </div>
 
       <div class="me-reply-list">
@@ -36,6 +39,9 @@
             <span style="padding-right: 10px">{{c.createDate | format}}</span>
             <a class="me-view-comment-tool" @click="showComment(c.id, c.author)">
               <i class="me-icon-comment"></i>&nbsp;回复
+            </a>
+            <a class="me-view-comment-tool" @click="deleteComment(c.id)" v-if="canDelete">
+              <i class="el-icon-delete"></i>&nbsp;删除
             </a>
           </div>
 
@@ -63,15 +69,16 @@
 </template>
 
 <script>
-  import {publishComment} from '@/api/comment'
-
+  import {publishComment,deleteComment} from '@/api/comment'
+  import store from '@/store'
   export default {
     name: "CommentItem",
     props: {
       articleId: Number,
       comment: Object,
       index: Number,
-      rootCommentCounts: Number
+      rootCommentCounts: Number,
+      canDelete:Boolean,
     },
     data() {
       return {
@@ -81,7 +88,20 @@
         reply: this.getEmptyReply()
       }
     },
+    computed:{
+      
+    },
     methods: {
+      deleteComment(id){
+        deleteComment(id).then(r=>{
+          this.$emit('commentCountsIncrement',-1);
+          this.$message({
+            type:'success',
+            message:'评论删除成功'
+          })
+        })
+        
+      },
       showComment(commentShowIndex, toUser) {
         this.reply = this.getEmptyReply()
 
@@ -107,22 +127,24 @@
         if (!that.reply.content) {
           return;
         }
-
+        
         publishComment(that.reply).then(data => {
+          
           that.$message({type: 'success', message: '评论成功', showClose: true})
+          this.$emit('commentCountsIncrement',1)
           if(!that.comment.childrens){
             that.comment.childrens = []
           }
           // that.comment.childrens.unshift(data.data)
           that.comment.content = ''
-          that.$emit('commentCountsIncrement')
+          
           that.showComment(that.commentShowIndex)
         }).catch(error => {
           if (error !== 'error') {
             that.$message({type: 'error', message: '评论失败', showClose: true})
           }
         })
-
+        
       },
       getEmptyReply() {
         return {

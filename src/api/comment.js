@@ -26,3 +26,12 @@ export function publishComment(comment) {
     })
   })
 }
+export function deleteComment(id){
+  return request({
+    url:'/article/comment/delete/',
+    method:'post',
+    data:qs.stringify({
+      comment_id:id
+    })
+  })
+}

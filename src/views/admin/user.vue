@@ -1,5 +1,8 @@
 <template>
-  <el-table
+<div>
+  <el-card>
+    <div slot="header"><h3>用户列表</h3></div>
+    <el-table
     :data="tableData"
     style="width: 100%">
     <el-table-column type="expand">
@@ -50,7 +53,7 @@
         <el-button
           size="mini"
           type="danger"
-          @click="handleDelete(scope.row.id)">Delete</el-button>
+          @click="handleDelete(scope.row.id)">Disable</el-button>
       </template>
     </el-table-column>
     <template #append>
@@ -65,11 +68,30 @@
       </div>
     </template>
   </el-table>
+  </el-card>
+  <el-card>
+    <h3 slot="header">批量创建用户</h3>
+     <el-form :inline="true" :model="batch_create" class="demo-form-inline">
+      <el-form-item label="用户名前缀">
+        <el-input v-model="batch_create.prefix" placeholder=""></el-input>
+      </el-form-item>
+      <el-form-item label="默认密码">
+        <el-input v-model="batch_create.default_password" placeholder=""></el-input>
+      </el-form-item>
+      <el-form-item label="创建数量">
+        <el-input v-model="batch_create.size" placeholder=""></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">创建</el-button>
+      </el-form-item>
+    </el-form>
+  </el-card>
+</div>
 </template>
 
 
 <script>
-import {deleteObj, getAllUsers} from './api'
+import {deleteObj, getAllUsers,batch_create} from './api'
   export default {
     created(){
       this.getAllUsers(this.query)
@@ -101,7 +123,16 @@ import {deleteObj, getAllUsers} from './api'
       handleSearch(input){
         this.query.search =input
         this.getAllUsers(this.query)
+      },
+      onSubmit(){
+        batch_create(this.batch_create).then(r=>{
+          this.$message({
+            type:'success',
+            message:'创建成功'
+          })
+        })
       }
+      
     },
     data() {
       return {
@@ -112,6 +143,11 @@ import {deleteObj, getAllUsers} from './api'
           search:undefined,
           page:1,
           ordering:undefined
+        },
+        batch_create:{
+          prefix:'',
+          default_password:'',
+          size:'',
         }
       }
     }

@@ -34,10 +34,8 @@
         }
       },
       query: {
-        type: Object,
-        default() {
-          return {}
-        }
+        type: Object
+        
       },
 
     },
@@ -61,9 +59,11 @@
         deep: true
       }
     },
-    created() {
+    mounted() {
+      setTimeout(()=>{
+        this.getArticles(false)
+      },100)
       
-      this.getArticles()
     },
     
     methods: {
@@ -74,13 +74,13 @@
         this.$router.push({path: `/view/${id}`})
       },
       getArticles(clr) {
-        
         let that = this
         that.loading = true
         if(clr){
           this.innerPage.page = 1
           this.noData = false
         }
+
         getArticles(this.query, this.innerPage).then(data => {
           let newArticles = data
           

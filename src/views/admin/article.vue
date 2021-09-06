@@ -100,7 +100,6 @@ import {getAllArticles,deleteObj} from './api'
       getAllArticles(query){
         getAllArticles(query).then(r=>{
           this.tableData = r.data.results
-          console.log(r.data)
           this.max_size = r.data.count
         })
       },
