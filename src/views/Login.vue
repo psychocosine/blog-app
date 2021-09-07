@@ -57,16 +57,13 @@
     methods: {
       login(formName) {
         let that = this
-
         this.$refs[formName].validate((valid) => {
           if (valid) {
-
             that.$store.dispatch('login', that.userForm).then(() => {
               that.$router.go(-1)
             }).catch((error) => {
-              if (error !== 'error') {
-                that.$message({message: error, type: 'error', showClose: true});
-              }
+              that.$message({message: error, type: 'error', showClose: true});
+              
             })
           } else {
             return false;

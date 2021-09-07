@@ -33,8 +33,10 @@ export default new Vuex.Store({
     login({commit}, user) {
       return new Promise((resolve, reject) => {
         login(user.username, user.password).then(data => {
-          // commit('SET_TOKEN', data.data['Oauth-Token'])
-          // setToken(data.data['Oauth-Token'])
+          console.log(data.success)
+          if(!data.success){
+            throw Error('用户名或密码错误')
+          }
           commit("SET_ACCOUNT",user.username)
           resolve()
         }).catch(error => {
