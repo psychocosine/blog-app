@@ -71,6 +71,11 @@
           <template #label>
             <span><i class="el-icon-document"></i> 我的文章</span>
           </template>
+          <el-button icon="el-icon-sort" type="text" style="display: inline-block;" @click="handleSort('create_time')">按时间排序</el-button>
+          <el-button icon="el-icon-sort" type="text" style="display: inline-block;" @click="handleSort('page_view')">按访问量排序</el-button>
+          <div style="margin-left: 60%;margin-bottom: 2%; display: inline-block;">
+              <el-input v-model="tmp.search" placeholder="输入关键字搜索" />
+            </div>
           <div>
             <article-scroll-page :query="tmp" v-if="tmp.author_id"></article-scroll-page>
           </div>
@@ -93,7 +98,6 @@ import ArticleScrollPage from '@/views/common/ArticleScrollPage'
   export default {
     data () {
       return {
-        circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
         dialogVisible: false,
         userinfo:{
           username:'',
@@ -105,6 +109,8 @@ import ArticleScrollPage from '@/views/common/ArticleScrollPage'
           birthday:'',
         },
         tmp:{
+          search:'',
+          ordering:''
         },
         headers:{
 
@@ -115,8 +121,6 @@ import ArticleScrollPage from '@/views/common/ArticleScrollPage'
     created(){
       this.getUserInfo()
       this.userForm.birthday = this.userinfo.birthday
-      
-      // var csrftoken = document.cookie.replace(/(?:(?:^|.*;\s*)test2\s*\=\s*([^;]*).*$)|^.*$/, "csrftoken");
       this.headers['X-CSRFToken'] = docCookies.getItem('csrftoken')
       
     },
@@ -154,6 +158,14 @@ import ArticleScrollPage from '@/views/common/ArticleScrollPage'
             message:'信息修改成功'
           })
         })
+      },
+      handleSort(method){
+        if(this.tmp['ordering']==method){
+          this.tmp['ordering']='-'+method
+        } else {
+          this.tmp['ordering'] = method;
+        }
+        console.log(this.tmp)
       }
     },
     components:{
@@ -162,7 +174,7 @@ import ArticleScrollPage from '@/views/common/ArticleScrollPage'
   }
 </script>
 <style scoped >
-/* @import url("//unpkg.com/element-ui@2.15.5/lib/theme-chalk/index.css"); */
+@import url("//unpkg.com/element-ui@2.15.5/lib/theme-chalk/index.css");
 img {
   height: 200px;
   border-radius: 100px;

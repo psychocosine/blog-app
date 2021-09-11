@@ -10,7 +10,7 @@ export function getArticles(query, page) {
       method: 'get',
       params: {
         size:page.size,
-        // sort:"create_time",
+        ordering:query.ordering,
         page:page.page,
         search:query.search,
         tag_name:query.tagId==''?undefined:query.tagId,

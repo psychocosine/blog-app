@@ -342,8 +342,8 @@
 
 <style >
   .el-header {
-    position: fixed;
-    z-index: 1024;
+    /* position: fixed;
+    z-index: 1024; */
     min-width: 100%;
     box-shadow: 0 2px 3px hsla(0, 0%, 7%, .1), 0 0 0 1px hsla(0, 0%, 7%, .1);
   }
